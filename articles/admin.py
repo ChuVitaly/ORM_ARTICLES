@@ -5,5 +5,6 @@ from .models import Article
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['title', 'text', 'published_at', 'image']
+
 
