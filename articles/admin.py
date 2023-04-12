@@ -16,9 +16,10 @@ from .models import Article
 #         return super().clean()  # вызываем базовый код переопределяемого метода
 
 
-# @admin.register(Article)
-# class ArticleAdmin(admin.ModelAdmin):
-#     list_display = ['title', 'text', 'category', 'published_at', 'image']
+@admin.register(Article)
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ('title', 'text', 'published_at', 'image')
+
 
 # class CategoryInline(admin.TabularInline):
 #     model = Category
