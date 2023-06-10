@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from articles.models import Article, Category
+from articles.models import Article
 
 
 def articles_list(request):
@@ -11,5 +11,6 @@ def articles_list(request):
         'page_title': 'Новости на сайте'
     }
 
+    ordering = '-published_at'
 
     return render(request, template, context)
