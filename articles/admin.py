@@ -1,43 +1,41 @@
 from django.contrib import admin
 
-from .models import Article
+from .models import Article, Comment, Tag, Scope, ArticleTags
 
 
-# class RelationshipInlineFormset(BaseInlineFormSet):
-#     def clean(self):
-#         for form in self.forms:
-#             # В form.cleaned_data будет словарь с данными
-#             # каждой отдельной формы, которые вы можете проверить
-#             form.cleaned_data
-#             # вызовом исключения ValidationError можно указать админке о наличие ошибки
-#             # таким образом объект не будет сохранен,
-#             # а пользователю выведется соответствующее сообщение об ошибке
-#             raise ValidationError('Тут всегда ошибка')
-#         return super().clean()  # вызываем базовый код переопределяемого метода
+class ScopeInline(admin.TabularInline):
+    model = Scope
+    extra = 1
+    verbose_name_plural = 'Разделы'
+    verbose_name = 'Раздел'
+    fields = ['tag', 'is_main']
+    ordering = ['is_main', 'tag__name']
 
-
-@admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('title', 'text', 'published_at', 'image')
+    inlines = [ScopeInline, ]
+    list_display = ('title', 'text', 'published_at')
+    search_fields = ('title',)
 
 
-# class CategoryInline(admin.TabularInline):
-#     model = Category
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('author', 'article', 'pub_date')
 
+
+class TagAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(Article, ArticleAdmin)
+admin.site.register(Comment, CommentAdmin)
+admin.site.register(Tag, TagAdmin)
+admin.site.register(ArticleTags)
 
 # @admin.register(Article)
 # class ArticleAdmin(admin.ModelAdmin):
-#     inlines = [CategoryInline]
-    # list_display = ['title', 'text', 'published_at', 'image']
+#     list_display = ('title', 'text', 'published_at', 'image')
 
-# @admin.register(Category)
-# class CategoryAdmin(admin.ModelAdmin):
-#     list_display = ['id','title']
-#
-#
-# @admin.register(Tag)
-# class TagAdmin(admin.ModelAdmin):
-#     pass
+
+
 
 
 
