@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+
 class Tag(models.Model):
     name = models.CharField(max_length=50)
 
@@ -14,6 +15,7 @@ class Article(models.Model):
     text = models.TextField(verbose_name='Текст')
     published_at = models.DateTimeField(verbose_name='Дата публикации статьи')
     image = models.ImageField(upload_to='articles/', blank=True, null=True)
+    tags = models.ManyToManyField(Tag, related_name='article', through='Scope')
 
     class Meta:
         verbose_name = 'Статья'
@@ -30,6 +32,13 @@ class ArticleTags(models.Model):
 
     def __str__(self):
         return f"{self.article.title}"
+
+class Scope(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+
+    class Meta:
+        app_label = 'articles'
 
 
 class Comment(models.Model):
